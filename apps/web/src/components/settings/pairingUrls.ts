@@ -8,6 +8,9 @@ export function resolveDesktopPairingUrl(endpointUrl: string, credential: string
 }
 
 export function resolveHostedPairingUrl(endpointUrl: string, credential: string): string | null {
+  if (!import.meta.env.VITE_HOSTED_APP_URL?.trim()) {
+    return null;
+  }
   const url = new URL(endpointUrl);
   if (url.protocol !== "https:") {
     return null;

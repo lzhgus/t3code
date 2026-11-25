@@ -14,7 +14,14 @@ describe("settings pairing URL helpers", () => {
     );
   });
 
-  it("uses hosted pairing URLs for HTTPS endpoints", () => {
+  it("uses direct self-hosted pairing URLs by default for HTTPS endpoints", () => {
+    expect(resolveHostedPairingUrl("https://host.tailnet.example.ts.net", "PAIRCODE")).toBeNull();
+    expect(resolveDesktopPairingUrl("https://host.tailnet.example.ts.net", "PAIRCODE")).toBe(
+      "https://host.tailnet.example.ts.net/pair#token=PAIRCODE",
+    );
+  });
+
+  it("uses hosted pairing URLs only when VITE_HOSTED_APP_URL is explicitly configured", () => {
     vi.stubEnv("VITE_HOSTED_APP_URL", "https://preview.t3.codes");
 
     expect(resolveHostedPairingUrl("https://host.tailnet.example.ts.net:3773", "PAIRCODE")).toBe(
