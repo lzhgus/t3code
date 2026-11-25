@@ -36,9 +36,16 @@ export const unmanagedUpdatePolicy: UpdatePolicy = {
   message: null,
 };
 
+const forkDisabledUpdatePolicy: UpdatePolicy = {
+  mode: "off",
+  feedUrl: undefined,
+  allowNightly: false,
+  message: "Automatic updates are disabled in this custom fork build.",
+};
+
 function resolveUpdatePolicy(document: ManagedPolicyDocument | undefined): UpdatePolicy {
   const updates = document?.limits?.updates;
-  if (document === undefined || updates === undefined) return unmanagedUpdatePolicy;
+  if (document === undefined || updates === undefined) return forkDisabledUpdatePolicy;
   return {
     mode: updates.mode,
     feedUrl: updates.feedUrl,
